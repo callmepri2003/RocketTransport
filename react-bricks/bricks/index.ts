@@ -1,8 +1,12 @@
 import { types } from "react-bricks/frontend"
-import layout from "./layout"
-import HeroUnit from "./HeroUnit"
-import features from "./features"
+import Hero from "./Hero"
+import { Services } from "./Services"
+import { Stats } from "./Stats"
 
-const bricks: types.Brick[] = [HeroUnit, ...layout, ...features]
+const bricks: types.Brick[] = [
+  Hero,
+  Services,
+  Stats
+]
 
 export default bricks
