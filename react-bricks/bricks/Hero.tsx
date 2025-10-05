@@ -13,6 +13,9 @@ const Hero: types.Brick = () => {
               <Text propName="secondaryButton" placeholder="Button text..." renderBlock={({ children }) => <button className="btn btn-outline-custom">{children}</button>} />
             </div>
           </div>
+          <div className="col-lg-5 text-center mt-5 mt-lg-0">
+            <i className="fas fa-truck-moving" style={{ fontSize: "12rem", opacity: 0.2 }}></i>
+          </div>
         </div>
       </div>
     </section>

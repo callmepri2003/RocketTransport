@@ -4,8 +4,16 @@ const StatItem: types.Brick = () => {
   return (
     <div className="col-md-3 col-6">
       <div className="stat-item">
-        <Text propName="number" placeholder="Number..." renderBlock={({ children }) => <span className="stat-number">{children}</span>} />
-        <Text propName="label" placeholder="Label..." renderBlock={({ children }) => <span className="stat-label">{children}</span>} />
+        <Text
+          propName="number"
+          placeholder="24+"
+          renderBlock={({ children }) => <span className="stat-number">{children}</span>}
+        />
+        <Text
+          propName="label"
+          placeholder="Years Experience"
+          renderBlock={({ children }) => <span className="stat-label">{children}</span>}
+        />
       </div>
     </div>
   )
@@ -14,7 +22,10 @@ const StatItem: types.Brick = () => {
 StatItem.schema = {
   name: 'stat-item',
   label: 'Stat Item',
-  getDefaultProps: () => ({ number: '24+', label: 'Years Experience' }),
+  getDefaultProps: () => ({
+    number: '24+',
+    label: 'Years Experience',
+  }),
 }
 
 const Stats: types.Brick = () => {
@@ -37,7 +48,9 @@ Stats.schema = {
       name: 'stats',
       items: [
         { type: 'stat-item' }
-      ]
+      ],
+      min: 1,
+      max: 8,
     }
   ],
 }

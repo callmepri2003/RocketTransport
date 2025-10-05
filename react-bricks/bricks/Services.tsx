@@ -51,7 +51,7 @@ Services.schema = {
     {
       name: 'services',
       items: [
-        { type: 'service-card' }
+        { type: 'service-item' }
       ]
     }
   ],
