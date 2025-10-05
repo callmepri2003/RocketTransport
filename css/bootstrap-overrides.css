@@ -1,0 +1,8 @@
+:root {
+  --bs-primary: #1a237e;
+  --bs-primary-rgb: 26, 35, 126;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #1a237e !important;
+}

@@ -2,6 +2,7 @@ import type { AppProps } from "next/app"
 import { ThemeProvider } from "next-themes"
 import ReactBricksApp from "../components/ReactBricksApp"
 import "../css/style.css"  // your own global styles
+import '../css/bootstrap-overrides.css'
 
 const MyApp = (props: AppProps) => {
   return (
