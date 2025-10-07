@@ -276,18 +276,18 @@ Navbar.schema = {
         label: 'Company',
         isClickable: false,
         dropdownItems: [
-          { label: 'About Us', url: '/about' },
-          { label: 'Safety & Compliance', url: '/safety' }
+          { label: 'About Us', url: '/about-us' },
+          // { label: 'Safety & Compliance', url: '/safety' }
         ]
       },
-      {
-        label: 'Services',
-        url: '/services'
-      },
-      {
-        label: 'Contact',
-        url: '/contact'
-      },
+      // {
+      //   label: 'Services',
+      //   url: '/services'
+      // },
+      // {
+      //   label: 'Contact',
+      //   url: '/contact'
+      // },
       {
         label: 'Request a Rate',
         url: '/request-rate'
