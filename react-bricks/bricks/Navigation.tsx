@@ -167,17 +167,21 @@ DropdownNavItem.schema = {
   label: 'Dropdown Menu',
   hideFromAddMenu: true,
   getDefaultProps: () => ({
-    label: 'Dropdown',
+    label: 'Company',
     isClickable: false,
     url: '#',
     dropdownItems: [
       {
-        label: 'Option 1',
-        url: '#'
+        label: 'About',
+        url: '\about-us'
       },
       {
-        label: 'Option 2',
-        url: '#'
+        label: 'Safety and Compliance',
+        url: '/safety-and-compliance'
+      },
+      {
+        label: 'Careers',
+        url: '/careers'
       }
     ]
   }),
@@ -277,17 +281,17 @@ Navbar.schema = {
         isClickable: false,
         dropdownItems: [
           { label: 'About Us', url: '/about-us' },
-          // { label: 'Safety & Compliance', url: '/safety' }
+          { label: 'Safety & Compliance', url: '/safety' }
         ]
       },
-      // {
-      //   label: 'Services',
-      //   url: '/services'
-      // },
-      // {
-      //   label: 'Contact',
-      //   url: '/contact'
-      // },
+      {
+        label: 'Services',
+        url: '/services'
+      },
+      {
+        label: 'Contact',
+        url: '/contact'
+      },
       {
         label: 'Request a Rate',
         url: '/request-rate'

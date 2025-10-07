@@ -7,6 +7,10 @@ import { TransportEnquiryForm } from "./RequestRate"
 import { AboutJumbotron, GalleryImageItem, StatCard } from "./about-us-jumbotron"
 import TransportSection from "./about-us-section1"
 import TeamPhoneCallSection from "./about-us-phone-call"
+import MissionVisionSection from './about-us-section3'
+import DirectorsSection, { DirectorCard } from "./about-us-section4"
+import ServicesFeaturesSection, { FeatureCard } from "./about-us-section5"
+import ArticleFeaturesSection, { FeatureHighlight, GalleryImage } from "./about-us-section6"
 
 const bricks: types.Brick[] = [
   JumbotronSlideshow,
@@ -24,7 +28,15 @@ const bricks: types.Brick[] = [
   GalleryImageItem,
   StatCard,
   TransportSection,
-  TeamPhoneCallSection
+  TeamPhoneCallSection,
+  MissionVisionSection,
+  DirectorsSection,
+  DirectorCard,
+  ServicesFeaturesSection,
+  FeatureCard,
+  ArticleFeaturesSection,
+  GalleryImage,
+  FeatureHighlight
 ]
 
 export default bricks
