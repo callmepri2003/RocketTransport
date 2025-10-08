@@ -191,7 +191,7 @@ const FeatureHighlight = ({ icon }) => {
             height: '64px',
             borderRadius: '50%',
             backgroundColor: '#dbeafe',
-            color: '#3b82f6'
+            color: '#1e40af'
           }}
         >
           <i className={icon || 'fas fa-star'} style={{ fontSize: '1.75rem' }} />

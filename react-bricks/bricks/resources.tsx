@@ -62,6 +62,9 @@ const FileResource: types.Brick<FileResourceProps> = ({ fileData }) => {
                 href={fileData.url}
                 download={fileData.name}
                 className="btn btn-primary btn-lg"
+                style={{
+                  backgroundColor: "#1e40af"
+                }}
               >
                 <i className="bi bi-download me-2"></i>
                 Download

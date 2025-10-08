@@ -125,6 +125,7 @@ const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoi
                       <button
                         type="submit"
                         className="btn btn-primary btn-lg w-100"
+                        style={{ backgroundColor: "#1e40af" }}
                       >
                         <i className="bi bi-send me-2"></i>
                         Submit Application

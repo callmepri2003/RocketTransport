@@ -106,7 +106,8 @@ const FeatureCard = ({ icon }) => {
           transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
           boxShadow: isHovered
             ? '0 20px 60px rgba(0, 0, 0, 0.4)'
-            : '0 4px 20px rgba(0, 0, 0, 0.2)'
+            : '0 4px 20px rgba(0, 0, 0, 0.2)',
+          cursor: 'pointer'
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -121,10 +122,10 @@ const FeatureCard = ({ icon }) => {
             alignItems: 'center',
             justifyContent: 'center',
             background: isHovered
-              ? 'linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%)'
+              ? '#1e40af'
               : 'rgba(59, 130, 246, 0.15)',
             borderRadius: '50%',
-            border: '2px solid',
+            border: '2px solid #1e40af',
             borderColor: isHovered ? 'transparent' : 'rgba(59, 130, 246, 0.3)',
             transition: 'all 0.4s ease',
             transform: isHovered ? 'rotate(10deg) scale(1.1)' : 'rotate(0) scale(1)'
@@ -190,10 +191,10 @@ const FeatureCard = ({ icon }) => {
                 placeholder="/link"
                 renderBlock={({ children: link }) => (
                   <a
-                    href={link?.toString() || '#'}
+                    href='/services'
                     className="btn"
                     style={{
-                      backgroundColor: isHovered ? '#3b82f6' : 'transparent',
+                      backgroundColor: isHovered ? '#1e40af' : 'transparent',
                       color: '#ffffff',
                       border: '1px solid rgba(59, 130, 246, 0.5)',
                       padding: '0.625rem 2rem',
@@ -204,7 +205,7 @@ const FeatureCard = ({ icon }) => {
                       borderRadius: '0.5rem',
                       transition: 'all 0.3s ease',
                       textDecoration: 'none',
-                      display: 'inline-block'
+                      display: 'inline-block',
                     }}
                   >
                     {children}
@@ -264,14 +265,14 @@ ServicesFeaturesSection.schema = {
         title: 'Ship Local or Interstate',
         description: 'We specialise in local deliveries with the capability to accommodate interstate requests.',
         buttonText: 'SEE MORE',
-        buttonLink: '/services/shipping'
+        buttonLink: '/services/'
       },
       {
         icon: 'fas fa-truck-fast',
         title: 'Fast and Secure',
         description: 'We ensure that stock is delivered on-time and in perfect condition.',
         buttonText: 'SEE MORE',
-        buttonLink: '/services/delivery'
+        buttonLink: '/services/'
       }
     ]
   }),
