@@ -1,83 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { types, Text, RichText } from 'react-bricks/frontend';
 
 interface CareersApplicationProps {
   submitEndpoint?: string;
 }
 
-const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoint = '/api/careers' }) => {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    position: '',
-    resume: null as File | null,
-    coverLetter: ''
-  });
-
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({
-        ...formData,
-        resume: e.target.files[0]
-      });
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('submitting');
-
-    // Create FormData for file upload
-    const data = new FormData();
-    data.append('fullName', formData.fullName);
-    data.append('email', formData.email);
-    data.append('phone', formData.phone);
-    data.append('position', formData.position);
-    data.append('coverLetter', formData.coverLetter);
-    if (formData.resume) {
-      data.append('resume', formData.resume);
-    }
-
-    try {
-      const response = await fetch(submitEndpoint, {
-        method: 'POST',
-        body: data
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setMessage('Application submitted successfully! We\'ll be in touch soon.');
-        setFormData({
-          fullName: '',
-          email: '',
-          phone: '',
-          position: '',
-          resume: null,
-          coverLetter: ''
-        });
-        // Reset file input
-        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-        if (fileInput) fileInput.value = '';
-      } else {
-        throw new Error('Submission failed');
-      }
-    } catch (error) {
-      setStatus('error');
-      setMessage('There was an error submitting your application. Please try again.');
-    }
-  };
-
+const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoint = 'https://formspree.io/f/mrbyalzk' }) => {
   return (
     <section className="py-5">
       <div className="container">
@@ -106,21 +34,11 @@ const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoi
 
             <div className="card shadow-sm">
               <div className="card-body p-4">
-                {status === 'success' && (
-                  <div className="alert alert-success d-flex align-items-center mb-4" role="alert">
-                    <i className="bi bi-check-circle fs-4 me-3"></i>
-                    <div>{message}</div>
-                  </div>
-                )}
-
-                {status === 'error' && (
-                  <div className="alert alert-danger d-flex align-items-center mb-4" role="alert">
-                    <i className="bi bi-exclamation-triangle fs-4 me-3"></i>
-                    <div>{message}</div>
-                  </div>
-                )}
-
-                <div onSubmit={handleSubmit}>
+                <form
+                  action={submitEndpoint}
+                  method="POST"
+                  encType="multipart/form-data"
+                >
                   <div className="row g-3">
                     <div className="col-md-6">
                       <label htmlFor="fullName" className="form-label fw-semibold">
@@ -131,10 +49,7 @@ const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoi
                         className="form-control"
                         id="fullName"
                         name="fullName"
-                        value={formData.fullName}
-                        onChange={handleChange}
                         required
-                        disabled={status === 'submitting'}
                       />
                     </div>
 
@@ -147,10 +62,7 @@ const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoi
                         className="form-control"
                         id="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleChange}
                         required
-                        disabled={status === 'submitting'}
                       />
                     </div>
 
@@ -163,10 +75,7 @@ const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoi
                         className="form-control"
                         id="phone"
                         name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
                         required
-                        disabled={status === 'submitting'}
                       />
                     </div>
 
@@ -179,26 +88,20 @@ const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoi
                         className="form-control"
                         id="position"
                         name="position"
-                        value={formData.position}
-                        onChange={handleChange}
                         required
-                        disabled={status === 'submitting'}
                       />
                     </div>
 
                     <div className="col-12">
-                      <label htmlFor="resume" className="form-label fw-semibold">
+                      <label htmlFor="upload" className="form-label fw-semibold">
                         Resume/CV <span className="text-danger">*</span>
                       </label>
                       <input
                         type="file"
                         className="form-control"
-                        id="resume"
-                        name="resume"
-                        onChange={handleFileChange}
+                        id="upload"
+                        name="upload"
                         accept=".pdf,.doc,.docx"
-                        required
-                        disabled={status === 'submitting'}
                       />
                       <small className="form-text text-muted">
                         Accepted formats: PDF, DOC, DOCX (Max 5MB)
@@ -214,35 +117,21 @@ const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoi
                         id="coverLetter"
                         name="coverLetter"
                         rows={6}
-                        value={formData.coverLetter}
-                        onChange={handleChange}
                         placeholder="Tell us why you'd be a great fit..."
-                        disabled={status === 'submitting'}
                       />
                     </div>
 
                     <div className="col-12">
                       <button
-                        type="button"
-                        onClick={handleSubmit}
+                        type="submit"
                         className="btn btn-primary btn-lg w-100"
-                        disabled={status === 'submitting'}
                       >
-                        {status === 'submitting' ? (
-                          <>
-                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                            Submitting...
-                          </>
-                        ) : (
-                          <>
-                            <i className="bi bi-send me-2"></i>
-                            Submit Application
-                          </>
-                        )}
+                        <i className="bi bi-send me-2"></i>
+                        Submit Application
                       </button>
                     </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
 
@@ -266,16 +155,16 @@ CareersApplication.schema = {
   sideEditProps: [
     {
       name: 'submitEndpoint',
-      label: 'API Endpoint',
+      label: 'Formspree Endpoint',
       type: types.SideEditPropType.Text,
-      validate: (value: string) => value && value.startsWith('/') ? true : 'Must start with /'
+      validate: (value: string) => value && value.startsWith('https://formspree.io/') ? true : 'Must be a valid Formspree URL'
     }
   ],
 
   getDefaultProps: () => ({
     title: 'Join Our Team',
     description: 'We\'re always looking for talented individuals to join our team. Submit your application below.',
-    submitEndpoint: '/api/careers'
+    submitEndpoint: 'https://formspree.io/f/mrbyalzk'
   })
 };
 

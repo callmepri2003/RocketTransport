@@ -4,34 +4,35 @@ import { types, Text } from 'react-bricks/frontend';
 interface TransportEnquiryFormProps {
   backgroundColor: string;
   accentColor: string;
+  submitEndpoint?: string;
 }
 
 const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
   backgroundColor = '#f8f9fa',
-  accentColor = '#1a237e'
+  accentColor = '#1a237e',
+  submitEndpoint = 'https://formspree.io/f/xovknlva'
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
-  const handleSubmit = () => {
-    console.log('Form submitted');
-    alert('Form submitted! Check console for details.');
-  };
-
   return (
     <section style={{ backgroundColor, padding: '80px 0' }}>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-10 col-xl-9">
-            <div style={{
-              backgroundColor: '#ffffff',
-              borderRadius: '8px',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-              padding: '48px',
-              marginBottom: '32px'
-            }}>
+            <form
+              action={submitEndpoint}
+              method="POST"
+              style={{
+                backgroundColor: '#ffffff',
+                borderRadius: '8px',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                padding: '48px',
+                marginBottom: '32px'
+              }}
+            >
               {/* Progress Steps */}
               <div style={{ marginBottom: '48px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
@@ -83,339 +84,331 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
               </div>
 
               {/* Step 1: About */}
-              {currentStep === 1 && (
-                <div>
-                  <Text
-                    propName="step1Heading"
-                    placeholder="About Our Transport Services"
-                    renderBlock={({ children }) => (
-                      <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
-                        {children}
-                      </h2>
-                    )}
-                  />
+              <div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
+                <Text
+                  propName="step1Heading"
+                  placeholder="About Our Transport Services"
+                  renderBlock={({ children }) => (
+                    <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
+                      {children}
+                    </h2>
+                  )}
+                />
 
-                  <div style={{ color: '#495057', lineHeight: '1.8', marginBottom: '24px' }}>
-                    <Text
-                      propName="step1Para1"
-                      placeholder="Description paragraph 1..."
-                      renderBlock={({ children }) => <p>{children}</p>}
-                    />
-                    <Text
-                      propName="step1Para2"
-                      placeholder="Description paragraph 2..."
-                      renderBlock={({ children }) => <p>{children}</p>}
-                    />
-                    <Text
-                      propName="step1Para3"
-                      placeholder="Description paragraph 3..."
-                      renderBlock={({ children }) => <p>{children}</p>}
-                    />
-                    <Text
-                      propName="step1Para4"
-                      placeholder="Description paragraph 4..."
-                      renderBlock={({ children }) => <p>{children}</p>}
-                    />
-                    <Text
-                      propName="step1Para5"
-                      placeholder="Click NEXT to continue..."
-                      renderBlock={({ children }) => <p style={{ fontWeight: '500' }}>{children}</p>}
-                    />
-                  </div>
+                <div style={{ color: '#495057', lineHeight: '1.8', marginBottom: '24px' }}>
+                  <Text
+                    propName="step1Para1"
+                    placeholder="Description paragraph 1..."
+                    renderBlock={({ children }) => <p>{children}</p>}
+                  />
+                  <Text
+                    propName="step1Para2"
+                    placeholder="Description paragraph 2..."
+                    renderBlock={({ children }) => <p>{children}</p>}
+                  />
+                  <Text
+                    propName="step1Para3"
+                    placeholder="Description paragraph 3..."
+                    renderBlock={({ children }) => <p>{children}</p>}
+                  />
+                  <Text
+                    propName="step1Para4"
+                    placeholder="Description paragraph 4..."
+                    renderBlock={({ children }) => <p>{children}</p>}
+                  />
+                  <Text
+                    propName="step1Para5"
+                    placeholder="Click NEXT to continue..."
+                    renderBlock={({ children }) => <p style={{ fontWeight: '500' }}>{children}</p>}
+                  />
                 </div>
-              )}
+              </div>
 
               {/* Step 2: Enquiry Details */}
-              {currentStep === 2 && (
-                <div>
-                  <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
-                    Enquiry Details
-                  </h2>
+              <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
+                <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
+                  Enquiry Details
+                </h2>
 
-                  <div className="mb-4">
-                    <label className="form-label">Are you an existing Rocket Transport customer?</label>
-                    <div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="existingCustomer" />
-                        <label className="form-check-label">Yes</label>
-                      </div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="existingCustomer" defaultChecked />
-                        <label className="form-check-label">No</label>
-                      </div>
+                <div className="mb-4">
+                  <label className="form-label">Are you an existing Rocket Transport customer?</label>
+                  <div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input" type="radio" name="existingCustomer" value="Yes" />
+                      <label className="form-check-label">Yes</label>
                     </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Frequency of activity</label>
-                    <div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="frequency" />
-                        <label className="form-check-label">Regular</label>
-                      </div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="frequency" defaultChecked />
-                        <label className="form-check-label">Once only</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Number of items</label>
-                    <input type="number" className="form-control" placeholder="Enter number of items" />
-                    <div className="form-text">Please enter the number of items being moved.</div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Brief description of the goods <span style={{ color: '#dc3545' }}>*</span></label>
-                    <textarea className="form-control" rows={3}></textarea>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Nature of goods <span style={{ color: '#dc3545' }}>*</span></label>
-                    <div>
-                      {['Dangerous Goods', 'Perishable / Food Grade', 'Fragile', 'Valuable'].map(nature => (
-                        <div className="form-check" key={nature}>
-                          <input className="form-check-input" type="checkbox" />
-                          <label className="form-check-label">{nature}</label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Type of goods</label>
-                    <div>
-                      {['Plain Pallet', 'Chep Pallet', 'Loscam Pallet', 'Skid', 'Crate', 'IBC', 'Other'].map(type => (
-                        <div className="form-check" key={type}>
-                          <input className="form-check-input" type="radio" name="goodsType" />
-                          <label className="form-check-label">{type}</label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Comments / Details</label>
-                    <textarea className="form-control" rows={3}></textarea>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Attach files</label>
-                    <input type="file" className="form-control" multiple />
-                    <div className="form-text">or drag files here.</div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-6 mb-4">
-                      <label className="form-label">Weight (kg)</label>
-                      <input type="text" className="form-control" placeholder="Enter weight" />
-                    </div>
-                    <div className="col-md-6 mb-4">
-                      <label className="form-label">Dimensions (L x W x H)</label>
-                      <input type="text" className="form-control" placeholder="e.g., 1.2 x 1.2 x 2.4" />
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input" type="radio" name="existingCustomer" value="No" defaultChecked />
+                      <label className="form-check-label">No</label>
                     </div>
                   </div>
                 </div>
-              )}
+
+                <div className="mb-4">
+                  <label className="form-label">Frequency of activity</label>
+                  <div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input" type="radio" name="frequency" value="Regular" />
+                      <label className="form-check-label">Regular</label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input" type="radio" name="frequency" value="Once only" defaultChecked />
+                      <label className="form-check-label">Once only</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Number of items</label>
+                  <input type="number" name="numberOfItems" className="form-control" placeholder="Enter number of items" />
+                  <div className="form-text">Please enter the number of items being moved.</div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Brief description of the goods <span style={{ color: '#dc3545' }}>*</span></label>
+                  <textarea name="goodsDescription" className="form-control" rows={3} required></textarea>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Nature of goods <span style={{ color: '#dc3545' }}>*</span></label>
+                  <div>
+                    {['Dangerous Goods', 'Perishable / Food Grade', 'Fragile', 'Valuable'].map(nature => (
+                      <div className="form-check" key={nature}>
+                        <input className="form-check-input" type="checkbox" name="natureOfGoods" value={nature} />
+                        <label className="form-check-label">{nature}</label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Type of goods</label>
+                  <div>
+                    {['Plain Pallet', 'Chep Pallet', 'Loscam Pallet', 'Skid', 'Crate', 'IBC', 'Other'].map(type => (
+                      <div className="form-check" key={type}>
+                        <input className="form-check-input" type="radio" name="goodsType" value={type} />
+                        <label className="form-check-label">{type}</label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Comments / Details</label>
+                  <textarea name="comments" className="form-control" rows={3}></textarea>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Attach files link</label>
+                  <input type="url" name="filesLink" className="form-control" placeholder="https://drive.google.com/... or https://dropbox.com/..." />
+                  <div className="form-text">Share a link to files (Google Drive, Dropbox, etc.)</div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6 mb-4">
+                    <label className="form-label">Weight (kg)</label>
+                    <input type="text" name="weight" className="form-control" placeholder="Enter weight" />
+                  </div>
+                  <div className="col-md-6 mb-4">
+                    <label className="form-label">Dimensions (L x W x H)</label>
+                    <input type="text" name="dimensions" className="form-control" placeholder="e.g., 1.2 x 1.2 x 2.4" />
+                  </div>
+                </div>
+              </div>
 
               {/* Step 3: Transport Details */}
-              {currentStep === 3 && (
-                <div>
-                  <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
-                    Transport Details
-                  </h2>
+              <div style={{ display: currentStep === 3 ? 'block' : 'none' }}>
+                <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
+                  Transport Details
+                </h2>
 
-                  <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '24px', color: '#495057' }}>
-                    Origin Details
-                  </h5>
+                <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '24px', color: '#495057' }}>
+                  Origin Details
+                </h5>
 
-                  <div className="row mb-4">
-                    <div className="col-md-3 mb-3">
-                      <label className="form-label">City</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                    <div className="col-md-3 mb-3">
-                      <label className="form-label">State / Province</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                    <div className="col-md-3 mb-3">
-                      <label className="form-label">Postal / Zip Code</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                    <div className="col-md-3 mb-3">
-                      <label className="form-label">Country</label>
-                      <select className="form-select">
-                        <option>Australia</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
+                <div className="row mb-4">
+                  <div className="col-md-3 mb-3">
+                    <label className="form-label">City</label>
+                    <input type="text" name="originCity" className="form-control" />
                   </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Loading facilities available?</label>
-                    <div className="row">
-                      {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Other'].map(facility => (
-                        <div className="col-md-4 col-6" key={facility}>
-                          <div className="form-check">
-                            <input className="form-check-input" type="checkbox" />
-                            <label className="form-check-label">{facility}</label>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="col-md-3 mb-3">
+                    <label className="form-label">State / Province</label>
+                    <input type="text" name="originState" className="form-control" />
                   </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Loading support required?</label>
-                    <div className="row">
-                      {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Off dock'].map(support => (
-                        <div className="col-md-4 col-6" key={support}>
-                          <div className="form-check">
-                            <input className="form-check-input" type="checkbox" />
-                            <label className="form-check-label">{support}</label>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="col-md-3 mb-3">
+                    <label className="form-label">Postal / Zip Code</label>
+                    <input type="text" name="originPostalCode" className="form-control" />
                   </div>
-
-                  <div className="mb-5">
-                    <label className="form-label">Special instruction for pick up</label>
-                    <textarea className="form-control" rows={3}></textarea>
-                  </div>
-
-                  <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '24px', color: '#495057', borderTop: '1px solid #dee2e6', paddingTop: '32px' }}>
-                    Destination Details
-                  </h5>
-
-                  <div className="row mb-4">
-                    <div className="col-md-3 mb-3">
-                      <label className="form-label">City</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                    <div className="col-md-3 mb-3">
-                      <label className="form-label">State / Province</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                    <div className="col-md-3 mb-3">
-                      <label className="form-label">Postal / Zip Code</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                    <div className="col-md-3 mb-3">
-                      <label className="form-label">Country</label>
-                      <select className="form-select">
-                        <option>Australia</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Unloading facilities available?</label>
-                    <div className="row">
-                      {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Other'].map(facility => (
-                        <div className="col-md-4 col-6" key={facility}>
-                          <div className="form-check">
-                            <input className="form-check-input" type="checkbox" />
-                            <label className="form-check-label">{facility}</label>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Unloading support required?</label>
-                    <div className="row">
-                      {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Off dock'].map(support => (
-                        <div className="col-md-4 col-6" key={support}>
-                          <div className="form-check">
-                            <input className="form-check-input" type="checkbox" />
-                            <label className="form-check-label">{support}</label>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Special instruction for delivery</label>
-                    <textarea className="form-control" rows={3}></textarea>
+                  <div className="col-md-3 mb-3">
+                    <label className="form-label">Country</label>
+                    <select name="originCountry" className="form-select">
+                      <option>Australia</option>
+                      <option>Other</option>
+                    </select>
                   </div>
                 </div>
-              )}
+
+                <div className="mb-4">
+                  <label className="form-label">Loading facilities available?</label>
+                  <div className="row">
+                    {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Other'].map(facility => (
+                      <div className="col-md-4 col-6" key={facility}>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" name="loadingFacilities" value={facility} />
+                          <label className="form-check-label">{facility}</label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Loading support required?</label>
+                  <div className="row">
+                    {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Off dock'].map(support => (
+                      <div className="col-md-4 col-6" key={support}>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" name="loadingSupport" value={support} />
+                          <label className="form-check-label">{support}</label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-5">
+                  <label className="form-label">Special instruction for pick up</label>
+                  <textarea name="pickupInstructions" className="form-control" rows={3}></textarea>
+                </div>
+
+                <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '24px', color: '#495057', borderTop: '1px solid #dee2e6', paddingTop: '32px' }}>
+                  Destination Details
+                </h5>
+
+                <div className="row mb-4">
+                  <div className="col-md-3 mb-3">
+                    <label className="form-label">City</label>
+                    <input type="text" name="destinationCity" className="form-control" />
+                  </div>
+                  <div className="col-md-3 mb-3">
+                    <label className="form-label">State / Province</label>
+                    <input type="text" name="destinationState" className="form-control" />
+                  </div>
+                  <div className="col-md-3 mb-3">
+                    <label className="form-label">Postal / Zip Code</label>
+                    <input type="text" name="destinationPostalCode" className="form-control" />
+                  </div>
+                  <div className="col-md-3 mb-3">
+                    <label className="form-label">Country</label>
+                    <select name="destinationCountry" className="form-select">
+                      <option>Australia</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Unloading facilities available?</label>
+                  <div className="row">
+                    {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Other'].map(facility => (
+                      <div className="col-md-4 col-6" key={facility}>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" name="unloadingFacilities" value={facility} />
+                          <label className="form-check-label">{facility}</label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Unloading support required?</label>
+                  <div className="row">
+                    {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Off dock'].map(support => (
+                      <div className="col-md-4 col-6" key={support}>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" name="unloadingSupport" value={support} />
+                          <label className="form-check-label">{support}</label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">Special instruction for delivery</label>
+                  <textarea name="deliveryInstructions" className="form-control" rows={3}></textarea>
+                </div>
+              </div>
 
               {/* Step 4: Customer Details */}
-              {currentStep === 4 && (
-                <div>
-                  <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
-                    Customer Details
-                  </h2>
+              <div style={{ display: currentStep === 4 ? 'block' : 'none' }}>
+                <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
+                  Customer Details
+                </h2>
 
-                  <div className="row">
-                    <div className="col-md-6 mb-4">
-                      <label className="form-label">Company Name <span style={{ color: '#dc3545' }}>*</span></label>
-                      <input type="text" className="form-control" />
-                    </div>
-                    <div className="col-md-6 mb-4">
-                      <label className="form-label">Your Name <span style={{ color: '#dc3545' }}>*</span></label>
-                      <input type="text" className="form-control" />
-                    </div>
+                <div className="row">
+                  <div className="col-md-6 mb-4">
+                    <label className="form-label">Company Name <span style={{ color: '#dc3545' }}>*</span></label>
+                    <input type="text" name="companyName" className="form-control" required />
                   </div>
-
-                  <div className="row">
-                    <div className="col-md-6 mb-4">
-                      <label className="form-label">Phone <span style={{ color: '#dc3545' }}>*</span></label>
-                      <input type="tel" className="form-control" />
-                    </div>
-                    <div className="col-md-6 mb-4">
-                      <label className="form-label">Email <span style={{ color: '#dc3545' }}>*</span></label>
-                      <input type="email" className="form-control" />
-                    </div>
+                  <div className="col-md-6 mb-4">
+                    <label className="form-label">Your Name <span style={{ color: '#dc3545' }}>*</span></label>
+                    <input type="text" name="yourName" className="form-control" required />
                   </div>
+                </div>
 
-                  <div className="mb-4">
-                    <label className="form-label">Preferred Contact</label>
-                    <div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="preferredContact" defaultChecked />
-                        <label className="form-check-label">Phone</label>
-                      </div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="preferredContact" />
-                        <label className="form-check-label">Email</label>
-                      </div>
-                    </div>
+                <div className="row">
+                  <div className="col-md-6 mb-4">
+                    <label className="form-label">Phone <span style={{ color: '#dc3545' }}>*</span></label>
+                    <input type="tel" name="phone" className="form-control" required />
                   </div>
-
-                  <div className="mb-4">
-                    <label className="form-label">Are you interested in any other services?</label>
-                    <div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="otherServices" />
-                        <label className="form-check-label">Yes</label>
-                      </div>
-                      <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio" name="otherServices" defaultChecked />
-                        <label className="form-check-label">No</label>
-                      </div>
-                    </div>
+                  <div className="col-md-6 mb-4">
+                    <label className="form-label">Email <span style={{ color: '#dc3545' }}>*</span></label>
+                    <input type="email" name="email" className="form-control" required />
                   </div>
+                </div>
 
-                  <div className="mb-4">
-                    <label className="form-label">How did you find us?</label>
-                    <div>
-                      {['Advertisement', 'Search Engine', 'Referral (word of mouth)', 'Industry Association', 'Other'].map(option => (
-                        <div className="form-check" key={option}>
-                          <input className="form-check-input" type="radio" name="findUs" />
-                          <label className="form-check-label">{option}</label>
-                        </div>
-                      ))}
+                <div className="mb-4">
+                  <label className="form-label">Preferred Contact</label>
+                  <div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input" type="radio" name="preferredContact" value="Phone" defaultChecked />
+                      <label className="form-check-label">Phone</label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input" type="radio" name="preferredContact" value="Email" />
+                      <label className="form-check-label">Email</label>
                     </div>
                   </div>
                 </div>
-              )}
+
+                <div className="mb-4">
+                  <label className="form-label">Are you interested in any other services?</label>
+                  <div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input" type="radio" name="otherServices" value="Yes" />
+                      <label className="form-check-label">Yes</label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input" type="radio" name="otherServices" value="No" defaultChecked />
+                      <label className="form-check-label">No</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label">How did you find us?</label>
+                  <div>
+                    {['Advertisement', 'Search Engine', 'Referral (word of mouth)', 'Industry Association', 'Other'].map(option => (
+                      <div className="form-check" key={option}>
+                        <input className="form-check-input" type="radio" name="findUs" value={option} />
+                        <label className="form-check-label">{option}</label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
               {/* Navigation Buttons */}
               <div style={{
@@ -453,8 +446,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                   </button>
                 ) : (
                   <button
-                    type="button"
-                    onClick={handleSubmit}
+                    type="submit"
                     className="btn"
                     style={{
                       backgroundColor: accentColor,
@@ -473,7 +465,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
               <div style={{ textAlign: 'right', marginTop: '16px', color: '#9e9e9e', fontSize: '0.875rem' }}>
                 Page {currentStep} of 4
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -548,6 +540,7 @@ TransportEnquiryForm.schema = {
   getDefaultProps: () => ({
     backgroundColor: '#f8f9fa',
     accentColor: '#1a237e',
+    submitEndpoint: 'https://formspree.io/f/xovknlva',
     step1Heading: 'About Our Transport Services',
     step1Para1: 'We provide efficient, secure transport services for a wide range of palletised freight – from fast moving consumer goods to dangerous goods – for one-off or regular deliveries.',
     step1Para2: 'We offer freight services for palletised freight within Australia. Standard pallets used in Australia measure 1.2 metres × 1.2 metres. The maximum height for a loaded pallet is 2.4 metres. The maximum consignment weight for a single pallet is 1000 kilograms.',
@@ -557,6 +550,17 @@ TransportEnquiryForm.schema = {
   }),
 
   sideEditProps: [
+    {
+      groupName: 'Form Settings',
+      defaultOpen: false,
+      props: [
+        {
+          name: 'submitEndpoint',
+          label: 'Formspree Endpoint',
+          type: types.SideEditPropType.Text
+        }
+      ]
+    },
     {
       groupName: 'Styling',
       defaultOpen: true,
