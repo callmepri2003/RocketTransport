@@ -260,6 +260,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                       </div>
                     ))}
                   </div>
+                  <input type="text" name="loadingFacilitiesOther" className="form-control mt-2" placeholder="Please specify other loading facilities" />
                 </div>
 
                 <div className="mb-4">
@@ -319,6 +320,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                       </div>
                     ))}
                   </div>
+                  <input type="text" name="unloadingFacilitiesOther" className="form-control mt-2" placeholder="Please specify other unloading facilities" />
                 </div>
 
                 <div className="mb-4">

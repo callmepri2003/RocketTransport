@@ -3,6 +3,7 @@ import { types, Repeater, Text } from 'react-bricks/frontend';
 
 interface NavbarProps {
   logo: types.IImageSource;
+  logoHeight: number;
   backgroundColor: string;
   textColor: string;
   hoverColor: string;
@@ -10,6 +11,7 @@ interface NavbarProps {
 
 const Navbar: types.Brick<NavbarProps> = ({
   logo,
+  logoHeight = 40,
   backgroundColor = '#ffffff',
   textColor = '#000000',
   hoverColor = '#1a237e'
@@ -32,7 +34,7 @@ const Navbar: types.Brick<NavbarProps> = ({
               <img
                 src={logo.src}
                 alt={logo.alt || 'Logo'}
-                height="40"
+                style={{ height: `${logoHeight}px !important` }}
                 className="d-inline-block align-text-top"
               />
             )}
@@ -268,6 +270,7 @@ Navbar.schema = {
       srcSet: '',
       alt: 'Company Logo'
     },
+    logoHeight: 40,
     backgroundColor: '#ffffff',
     textColor: '#000000',
     hoverColor: '#1a237e !important',
@@ -320,6 +323,16 @@ Navbar.schema = {
           name: 'logo',
           label: 'Logo Image',
           type: types.SideEditPropType.Image
+        },
+        {
+          name: 'logoHeight',
+          label: 'Logo Height',
+          type: types.SideEditPropType.Range,
+          rangeOptions: {
+            min: 20,
+            max: 100,
+            step: 5
+          }
         }
       ]
     },
