@@ -67,7 +67,7 @@ const ServicesFeaturesSection = ({ backgroundImage, overlayOpacity, overlayColor
                 <div
                   style={{
                     fontSize: '1.4rem',
-                    color: '#22d3ee',
+                    color: '#3b82f6',
                     fontWeight: '300',
                     letterSpacing: '0.02em'
                   }}

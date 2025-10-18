@@ -13,7 +13,7 @@ const GeneralEnquiriesForm: types.Brick<GeneralEnquiriesFormProps> = ({
   submitEndpoint = 'https://formspree.io/f/YOUR_FORM_ID'
 }) => {
   return (
-    <section style={{ backgroundColor, padding: '80px 0' }}>
+    <section style={{ backgroundColor, padding: '80px 0' }} id="generalEnquiriesForm">
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-8 col-xl-7">

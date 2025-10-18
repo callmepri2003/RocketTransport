@@ -100,7 +100,7 @@ const Footer: types.Brick<FooterProps> = ({
               Contact Info
             </h5>
             <div style={{ color: textColor, opacity: 0.9, fontSize: '0.9rem', lineHeight: '1.8' }}>
-              <Text
+              {/* <Text
                 propName="contactAddress"
                 placeholder="Address..."
                 renderBlock={({ children }) => (
@@ -108,7 +108,7 @@ const Footer: types.Brick<FooterProps> = ({
                     <strong>Address:</strong> {children}
                   </p>
                 )}
-              />
+              /> */}
               <Text
                 propName="contactPhone"
                 placeholder="Phone number..."

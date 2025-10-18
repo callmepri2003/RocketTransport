@@ -39,9 +39,10 @@ const TeamPhoneCallSection = ({ background }) => {
                 types.RichTextFeatures.Link,
               ]}
               renderBlock={({ children }) => (
-                <div style={{ fontSize: '1rem', lineHeight: '1.6', color: '#212529' }}>
+                <p style={{ fontSize: '1rem', lineHeight: '1.6', color: '#212529', marginBottom: '1em' }}>
                   {children}
-                </div>
+                </p>
+
               )}
             />
           </div>

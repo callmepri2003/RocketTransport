@@ -18,7 +18,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
   return (
-    <section style={{ backgroundColor, padding: '80px 0' }}>
+    <section style={{ backgroundColor, padding: '80px 0', paddingTop: '0px' }}>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-10 col-xl-9">

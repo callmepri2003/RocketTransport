@@ -86,12 +86,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let cleanSlug = "";
 
   if (!slug) {
-    cleanSlug = "/";
+    cleanSlug = "home"; // 👈 when no slug (i.e. "/"), use the "home" page
   } else if (typeof slug === "string") {
     cleanSlug = slug;
   } else {
     cleanSlug = slug.join("/");
   }
+
+
 
   const [page, header, footer] = await Promise.all([
     fetchPage({ slug: cleanSlug, language: context.locale, config }).catch(

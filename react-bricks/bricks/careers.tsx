@@ -135,12 +135,6 @@ const CareersApplication: types.Brick<CareersApplicationProps> = ({ submitEndpoi
                 </form>
               </div>
             </div>
-
-            <div className="text-center mt-4">
-              <small className="text-muted">
-                By submitting this application, you agree to our privacy policy and terms of service.
-              </small>
-            </div>
           </div>
         </div>
       </div>

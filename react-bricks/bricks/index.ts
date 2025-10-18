@@ -14,6 +14,7 @@ import ArticleFeaturesSection, { FeatureHighlight, GalleryImage } from "./about-
 import { FileResource, FileUploadBrick } from "./resources"
 import CareersApplication from "./careers"
 import { GeneralEnquiriesForm } from "./GeneralEnquiries"
+import { SimpleTextBrick } from "./SimpleText"
 
 const bricks: types.Brick[] = [
   JumbotronSlideshow,
@@ -43,7 +44,8 @@ const bricks: types.Brick[] = [
   FileUploadBrick,
   FileResource,
   CareersApplication,
-  GeneralEnquiriesForm
+  GeneralEnquiriesForm,
+  SimpleTextBrick
 ]
 
 export default bricks

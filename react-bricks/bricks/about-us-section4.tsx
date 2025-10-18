@@ -81,51 +81,6 @@ const DirectorCard = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Image Container */}
-        <div
-          className="position-relative overflow-hidden mb-3"
-          style={{
-            borderRadius: '0.5rem',
-            aspectRatio: '1',
-            backgroundColor: '#f1f5f9'
-          }}
-        >
-          <Image
-            propName="photo"
-            alt="Director photo"
-            maxWidth={500}
-            aspectRatio={1}
-            imageClassName="w-100 h-100"
-            imageStyle={{
-              objectFit: 'cover',
-              objectPosition: 'center'
-            }}
-            renderWrapper={({ children }) => (
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                {children}
-              </div>
-            )}
-          />
-
-          {/* Subtle gradient overlay */}
-          <div
-            className="position-absolute bottom-0 start-0 w-100"
-            style={{
-              height: '40%',
-              background: 'linear-gradient(to top, rgba(0,0,0,0.3), transparent)',
-              pointerEvents: 'none'
-            }}
-          />
-        </div>
 
         {/* Content */}
         <div>
@@ -186,35 +141,6 @@ const DirectorCard = () => {
               </div>
             )}
           />
-
-          {/* Optional contact info */}
-          <div className="mt-3 d-flex flex-wrap gap-2">
-            <Text
-              propName="email"
-              placeholder="email@company.com"
-              renderBlock={({ children }) => (
-                children && children.toString().trim() ? (
-                  <a
-                    href={`mailto:${children}`}
-                    style={{
-                      fontSize: '0.875rem',
-                      color: '#64748b',
-                      textDecoration: 'none',
-                      transition: 'color 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#3b82f6'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#64748b'}
-                  >
-                    {children}
-                  </a>
-                ) : (
-                  <span style={{ fontSize: '0.875rem', color: '#cbd5e1' }}>
-                    {children}
-                  </span>
-                )
-              )}
-            />
-          </div>
         </div>
       </div>
     </div>
