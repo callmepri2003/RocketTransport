@@ -13,6 +13,15 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
   submitEndpoint = 'https://formspree.io/f/xovknlva'
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [showThankYou, setShowThankYou] = useState(false);
+
+  // Check for success redirect from Formspree
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+      setShowThankYou(true);
+    }
+  }, []);
 
   const validateStep = () => {
     const form = document.querySelector('form');
@@ -74,479 +83,535 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
 
   return (
     <section style={{ backgroundColor, padding: '80px 0', paddingTop: '0px' }}>
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-10 col-xl-9">
-            <form
-              action={submitEndpoint}
-              method="POST"
-              encType="multipart/form-data"
-              onSubmit={handleSubmit}
-              style={{
+      {showThankYou ? (
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div style={{
                 backgroundColor: '#ffffff',
                 borderRadius: '8px',
                 boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-                padding: '48px',
+                padding: '64px 48px',
+                textAlign: 'center',
                 marginBottom: '32px'
-              }}
-            >
-              {/* Progress Steps */}
-              <div style={{ marginBottom: '48px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
-                  <div style={{
-                    position: 'absolute',
-                    top: '20px',
-                    left: '5%',
-                    right: '5%',
-                    height: '2px',
-                    backgroundColor: '#e0e0e0',
-                    zIndex: 0
-                  }}>
-                    <div style={{
-                      height: '100%',
-                      backgroundColor: accentColor,
-                      width: `${((currentStep - 1) / 3) * 100}%`,
-                      transition: 'width 0.3s ease'
-                    }} />
-                  </div>
-
-                  {['About', 'Enquiry Details', 'Transport Details', 'Customer Details'].map((label, index) => (
-                    <div key={index} style={{ flex: 1, textAlign: 'center', position: 'relative', zIndex: 1 }}>
-                      <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        backgroundColor: currentStep > index + 1 ? accentColor : currentStep === index + 1 ? accentColor : '#ffffff',
-                        border: `2px solid ${currentStep >= index + 1 ? accentColor : '#e0e0e0'}`,
-                        color: currentStep >= index + 1 ? '#ffffff' : '#9e9e9e',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: '600',
-                        margin: '0 auto 12px',
-                        transition: 'all 0.3s ease'
-                      }}>
-                        {index + 1}
-                      </div>
-                      <div style={{
-                        fontSize: '0.875rem',
-                        color: currentStep === index + 1 ? accentColor : '#757575',
-                        fontWeight: currentStep === index + 1 ? '600' : '400'
-                      }}>
-                        {label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Step 1: About */}
-              <div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
-                <Text
-                  propName="step1Heading"
-                  placeholder="About Our Transport Services"
-                  renderBlock={({ children }) => (
-                    <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
-                      {children}
-                    </h2>
-                  )}
-                />
-
-                <div style={{ color: '#495057', lineHeight: '1.8', marginBottom: '24px' }}>
-                  <Text
-                    propName="step1Para1"
-                    placeholder="Description paragraph 1..."
-                    renderBlock={({ children }) => <p>{children}</p>}
-                  />
-                  <Text
-                    propName="step1Para2"
-                    placeholder="Description paragraph 2..."
-                    renderBlock={({ children }) => <p>{children}</p>}
-                  />
-                  <Text
-                    propName="step1Para3"
-                    placeholder="Description paragraph 3..."
-                    renderBlock={({ children }) => <p>{children}</p>}
-                  />
-                  <Text
-                    propName="step1Para4"
-                    placeholder="Description paragraph 4..."
-                    renderBlock={({ children }) => <p>{children}</p>}
-                  />
-                  <Text
-                    propName="step1Para5"
-                    placeholder="Click NEXT to continue..."
-                    renderBlock={({ children }) => <p style={{ fontWeight: '500' }}>{children}</p>}
-                  />
-                </div>
-              </div>
-
-              {/* Step 2: Enquiry Details */}
-              <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
-                  Enquiry Details
-                </h2>
-
-                <div className="mb-4">
-                  <label className="form-label">Are you an existing Rocket Transport customer?</label>
-                  <div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="existingCustomer" value="Yes" />
-                      <label className="form-check-label">Yes</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="existingCustomer" value="No" defaultChecked />
-                      <label className="form-check-label">No</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Frequency of activity</label>
-                  <div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="frequency" value="Regular" />
-                      <label className="form-check-label">Regular</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="frequency" value="Once only" defaultChecked />
-                      <label className="form-check-label">Once only</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Number of items</label>
-                  <input type="number" name="numberOfItems" className="form-control" placeholder="Enter number of items" />
-                  <div className="form-text">Please enter the number of items being moved.</div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Brief description of the goods <span style={{ color: '#dc3545' }}>*</span></label>
-                  <textarea name="goodsDescription" className="form-control" rows={3}></textarea>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Nature of goods <span style={{ color: '#dc3545' }}>*</span></label>
-                  <div>
-                    {['Dangerous Goods', 'Perishable / Food Grade', 'Fragile', 'Valuable', 'None of the above'].map(nature => (
-                      <div className="form-check" key={nature}>
-                        <input className="form-check-input" type="checkbox" name="natureOfGoods" value={nature} />
-                        <label className="form-check-label">{nature}</label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Type of goods <span style={{ color: '#dc3545' }}>*</span></label>
-                  <div>
-                    {['Plain Pallet', 'Chep Pallet', 'Loscam Pallet', 'Skid', 'Crate', 'IBC'].map(type => (
-                      <div className="form-check" key={type}>
-                        <input className="form-check-input" type="radio" name="goodsType" value={type} />
-                        <label className="form-check-label">{type}</label>
-                      </div>
-                    ))}
-                    <div className="form-check">
-                      <input className="form-check-input" type="radio" name="goodsType" value="Other" />
-                      <label className="form-check-label">Other</label>
-                    </div>
-                    <input type="text" name="goodsTypeOther" className="form-control mt-2" placeholder="Please specify other type" />
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Comments / Details</label>
-                  <textarea name="comments" className="form-control" rows={3}></textarea>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Attach files</label>
-                  <input type="file" name="files" className="form-control" multiple />
-                  <div className="form-text">You can select multiple files to upload</div>
-                </div>
-
-                <div className="row">
-                  <div className="col-md-6 mb-4">
-                    <label className="form-label">Weight (kg) <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="weight" className="form-control" placeholder="Enter weight" />
-                  </div>
-                  <div className="col-md-6 mb-4">
-                    <label className="form-label">Dimensions (L x W x H) <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="dimensions" className="form-control" placeholder="e.g., 1.2 x 1.2 x 2.4" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 3: Transport Details */}
-              <div style={{ display: currentStep === 3 ? 'block' : 'none' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
-                  Transport Details
-                </h2>
-
-                <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '24px', color: '#495057' }}>
-                  Origin Details
-                </h5>
-
-                <div className="row mb-4">
-                  <div className="col-md-3 mb-3">
-                    <label className="form-label">City <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="originCity" className="form-control" />
-                  </div>
-                  <div className="col-md-3 mb-3">
-                    <label className="form-label">State / Province <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="originState" className="form-control" />
-                  </div>
-                  <div className="col-md-3 mb-3">
-                    <label className="form-label">Postal / Zip Code <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="originPostalCode" className="form-control" />
-                  </div>
-                  <div className="col-md-3 mb-3">
-                    <label className="form-label">Country</label>
-                    <select name="originCountry" className="form-select">
-                      <option>Australia</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Loading facilities available?</label>
-                  <div className="row">
-                    {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Other'].map(facility => (
-                      <div className="col-md-4 col-6" key={facility}>
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" name="loadingFacilities" value={facility} />
-                          <label className="form-check-label">{facility}</label>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <input type="text" name="loadingFacilitiesOther" className="form-control mt-2" placeholder="Please specify other loading facilities" />
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Loading support required?</label>
-                  <div className="row">
-                    {['Tailgate', 'Hand load', 'Dock load', 'Off dock'].map(support => (
-                      <div className="col-md-4 col-6" key={support}>
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" name="loadingSupport" value={support} />
-                          <label className="form-check-label">{support}</label>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="col-md-4 col-6">
-                      <div className="form-check">
-                        <input className="form-check-input" type="checkbox" name="loadingSupport" value="Other" />
-                        <label className="form-check-label">Other</label>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="text" name="loadingSupportOther" className="form-control mt-2" placeholder="Please specify other loading support" />
-                </div>
-
-                <div className="mb-5">
-                  <label className="form-label">Special instruction for pick up</label>
-                  <textarea name="pickupInstructions" className="form-control" rows={3}></textarea>
-                </div>
-
-                <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '24px', color: '#495057', borderTop: '1px solid #dee2e6', paddingTop: '32px' }}>
-                  Destination Details
-                </h5>
-
-                <div className="row mb-4">
-                  <div className="col-md-3 mb-3">
-                    <label className="form-label">City <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="destinationCity" className="form-control" />
-                  </div>
-                  <div className="col-md-3 mb-3">
-                    <label className="form-label">State / Province <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="destinationState" className="form-control" />
-                  </div>
-                  <div className="col-md-3 mb-3">
-                    <label className="form-label">Postal / Zip Code <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="destinationPostalCode" className="form-control" />
-                  </div>
-                  <div className="col-md-3 mb-3">
-                    <label className="form-label">Country</label>
-                    <select name="destinationCountry" className="form-select">
-                      <option>Australia</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Unloading facilities available?</label>
-                  <div className="row">
-                    {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Other'].map(facility => (
-                      <div className="col-md-4 col-6" key={facility}>
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" name="unloadingFacilities" value={facility} />
-                          <label className="form-check-label">{facility}</label>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <input type="text" name="unloadingFacilitiesOther" className="form-control mt-2" placeholder="Please specify other unloading facilities" />
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Unloading support required?</label>
-                  <div className="row">
-                    {['Tailgate', 'Hand load', 'Dock load', 'Off dock'].map(support => (
-                      <div className="col-md-4 col-6" key={support}>
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" name="unloadingSupport" value={support} />
-                          <label className="form-check-label">{support}</label>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="col-md-4 col-6">
-                      <div className="form-check">
-                        <input className="form-check-input" type="checkbox" name="unloadingSupport" value="Other" />
-                        <label className="form-check-label">Other</label>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="text" name="unloadingSupportOther" className="form-control mt-2" placeholder="Please specify other unloading support" />
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Special instruction for delivery</label>
-                  <textarea name="deliveryInstructions" className="form-control" rows={3}></textarea>
-                </div>
-              </div>
-
-              {/* Step 4: Customer Details */}
-              <div style={{ display: currentStep === 4 ? 'block' : 'none' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
-                  Customer Details
-                </h2>
-
-                <div className="row">
-                  <div className="col-md-6 mb-4">
-                    <label className="form-label">Company Name</label>
-                    <input type="text" name="companyName" className="form-control" />
-                  </div>
-                  <div className="col-md-6 mb-4">
-                    <label className="form-label">Your Name <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="yourName" className="form-control" />
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-md-6 mb-4">
-                    <label className="form-label">Phone <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="tel" name="phone" className="form-control" />
-                  </div>
-                  <div className="col-md-6 mb-4">
-                    <label className="form-label">Email <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="email" name="email" className="form-control" />
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Preferred Contact</label>
-                  <div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="preferredContact" value="Phone" defaultChecked />
-                      <label className="form-check-label">Phone</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="preferredContact" value="Email" />
-                      <label className="form-check-label">Email</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">Are you interested in any other services?</label>
-                  <div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="otherServices" value="Yes" />
-                      <label className="form-check-label">Yes</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="otherServices" value="No" defaultChecked />
-                      <label className="form-check-label">No</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <label className="form-label">How did you find us?</label>
-                  <div>
-                    {['Advertisement', 'Search Engine', 'Referral (word of mouth)', 'Industry Association', 'Other'].map(option => (
-                      <div className="form-check" key={option}>
-                        <input className="form-check-input" type="radio" name="findUs" value={option} />
-                        <label className="form-check-label">{option}</label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Navigation Buttons */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: '48px',
-                paddingTop: '32px',
-                borderTop: '1px solid #dee2e6'
               }}>
-                {currentStep > 1 && (
-                  <button
-                    type="button"
-                    onClick={prevStep}
-                    className="btn btn-outline-secondary"
-                    style={{ padding: '12px 32px', fontWeight: '500' }}
-                  >
-                    Back
-                  </button>
-                )}
-                {currentStep < 4 ? (
-                  <button
-                    type="button"
-                    onClick={nextStep}
-                    className="btn"
-                    style={{
-                      backgroundColor: accentColor,
-                      color: '#ffffff',
-                      padding: '12px 32px',
-                      fontWeight: '500',
-                      marginLeft: 'auto',
-                      border: 'none'
-                    }}
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    className="btn"
-                    style={{
-                      backgroundColor: accentColor,
-                      color: '#ffffff',
-                      padding: '12px 32px',
-                      fontWeight: '500',
-                      marginLeft: 'auto',
-                      border: 'none'
-                    }}
-                  >
-                    Submit
-                  </button>
-                )}
+                <div style={{
+                  width: '80px',
+                  height: '80px',
+                  borderRadius: '50%',
+                  backgroundColor: `${accentColor}20`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 24px'
+                }}>
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '16px', color: '#212529' }}>
+                  Thank You!
+                </h2>
+                <p style={{ fontSize: '1.125rem', color: '#495057', marginBottom: '32px' }}>
+                  Thank you for your transport enquiry. We've received your shipment details and will review your requirements carefully. One of our team members will be in touch within 24 hours with a tailored quote for your palletised freight needs.
+                </p>
+                <button
+                  onClick={() => {
+                    setShowThankYou(false);
+                    setCurrentStep(1);
+                    window.history.replaceState({}, '', window.location.pathname);
+                  }}
+                  className="btn"
+                  style={{
+                    backgroundColor: accentColor,
+                    color: '#ffffff',
+                    padding: '12px 32px',
+                    fontWeight: '500',
+                    border: 'none'
+                  }}
+                >
+                  Submit Another Enquiry
+                </button>
               </div>
-
-              <div style={{ textAlign: 'right', marginTop: '16px', color: '#9e9e9e', fontSize: '0.875rem' }}>
-                Page {currentStep} of 4
-              </div>
-            </form>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-10 col-xl-9">
+              <form
+                action={submitEndpoint}
+                method="POST"
+                encType="multipart/form-data"
+                onSubmit={handleSubmit}
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                  padding: '48px',
+                  marginBottom: '32px'
+                }}
+              >
+                {/* Progress Steps */}
+                <div style={{ marginBottom: '48px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: '20px',
+                      left: '5%',
+                      right: '5%',
+                      height: '2px',
+                      backgroundColor: '#e0e0e0',
+                      zIndex: 0
+                    }}>
+                      <div style={{
+                        height: '100%',
+                        backgroundColor: accentColor,
+                        width: `${((currentStep - 1) / 3) * 100}%`,
+                        transition: 'width 0.3s ease'
+                      }} />
+                    </div>
+
+                    {['About', 'Enquiry Details', 'Transport Details', 'Customer Details'].map((label, index) => (
+                      <div key={index} style={{ flex: 1, textAlign: 'center', position: 'relative', zIndex: 1 }}>
+                        <div style={{
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '50%',
+                          backgroundColor: currentStep > index + 1 ? accentColor : currentStep === index + 1 ? accentColor : '#ffffff',
+                          border: `2px solid ${currentStep >= index + 1 ? accentColor : '#e0e0e0'}`,
+                          color: currentStep >= index + 1 ? '#ffffff' : '#9e9e9e',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: '600',
+                          margin: '0 auto 12px',
+                          transition: 'all 0.3s ease'
+                        }}>
+                          {index + 1}
+                        </div>
+                        <div style={{
+                          fontSize: '0.875rem',
+                          color: currentStep === index + 1 ? accentColor : '#757575',
+                          fontWeight: currentStep === index + 1 ? '600' : '400'
+                        }}>
+                          {label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Step 1: About */}
+                <div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
+                  <Text
+                    propName="step1Heading"
+                    placeholder="About Our Transport Services"
+                    renderBlock={({ children }) => (
+                      <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
+                        {children}
+                      </h2>
+                    )}
+                  />
+
+                  <div style={{ color: '#495057', lineHeight: '1.8', marginBottom: '24px' }}>
+                    <Text
+                      propName="step1Para1"
+                      placeholder="Description paragraph 1..."
+                      renderBlock={({ children }) => <p>{children}</p>}
+                    />
+                    <Text
+                      propName="step1Para2"
+                      placeholder="Description paragraph 2..."
+                      renderBlock={({ children }) => <p>{children}</p>}
+                    />
+                    <Text
+                      propName="step1Para3"
+                      placeholder="Description paragraph 3..."
+                      renderBlock={({ children }) => <p>{children}</p>}
+                    />
+                    <Text
+                      propName="step1Para4"
+                      placeholder="Description paragraph 4..."
+                      renderBlock={({ children }) => <p>{children}</p>}
+                    />
+                    <Text
+                      propName="step1Para5"
+                      placeholder="Click NEXT to continue..."
+                      renderBlock={({ children }) => <p style={{ fontWeight: '500' }}>{children}</p>}
+                    />
+                  </div>
+                </div>
+
+                {/* Step 2: Enquiry Details */}
+                <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
+                  <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
+                    Enquiry Details
+                  </h2>
+
+                  <div className="mb-4">
+                    <label className="form-label">Are you an existing Rocket Transport customer?</label>
+                    <div>
+                      <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="radio" name="existingCustomer" value="Yes" />
+                        <label className="form-check-label">Yes</label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="radio" name="existingCustomer" value="No" defaultChecked />
+                        <label className="form-check-label">No</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Frequency of activity</label>
+                    <div>
+                      <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="radio" name="frequency" value="Regular" />
+                        <label className="form-check-label">Regular</label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="radio" name="frequency" value="Once only" defaultChecked />
+                        <label className="form-check-label">Once only</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Number of items</label>
+                    <input type="number" name="numberOfItems" className="form-control" placeholder="Enter number of items" />
+                    <div className="form-text">Please enter the number of items being moved.</div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Brief description of the goods <span style={{ color: '#dc3545' }}>*</span></label>
+                    <textarea name="goodsDescription" className="form-control" rows={3}></textarea>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Nature of goods <span style={{ color: '#dc3545' }}>*</span></label>
+                    <div>
+                      {['Dangerous Goods', 'Perishable / Food Grade', 'Fragile', 'Valuable', 'None of the above'].map(nature => (
+                        <div className="form-check" key={nature}>
+                          <input className="form-check-input" type="checkbox" name="natureOfGoods" value={nature} />
+                          <label className="form-check-label">{nature}</label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Type of goods <span style={{ color: '#dc3545' }}>*</span></label>
+                    <div>
+                      {['Plain Pallet', 'Chep Pallet', 'Loscam Pallet', 'Skid', 'Crate', 'IBC'].map(type => (
+                        <div className="form-check" key={type}>
+                          <input className="form-check-input" type="radio" name="goodsType" value={type} />
+                          <label className="form-check-label">{type}</label>
+                        </div>
+                      ))}
+                      <div className="form-check">
+                        <input className="form-check-input" type="radio" name="goodsType" value="Other" />
+                        <label className="form-check-label">Other</label>
+                      </div>
+                      <input type="text" name="goodsTypeOther" className="form-control mt-2" placeholder="Please specify other type" />
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Comments / Details</label>
+                    <textarea name="comments" className="form-control" rows={3}></textarea>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Attach files</label>
+                    <input type="file" name="files" className="form-control" multiple />
+                    <div className="form-text">You can select multiple files to upload</div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-6 mb-4">
+                      <label className="form-label">Weight (kg) <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="weight" className="form-control" placeholder="Enter weight" />
+                    </div>
+                    <div className="col-md-6 mb-4">
+                      <label className="form-label">Dimensions (L x W x H) <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="dimensions" className="form-control" placeholder="e.g., 1.2 x 1.2 x 2.4" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 3: Transport Details */}
+                <div style={{ display: currentStep === 3 ? 'block' : 'none' }}>
+                  <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
+                    Transport Details
+                  </h2>
+
+                  <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '24px', color: '#495057' }}>
+                    Origin Details
+                  </h5>
+
+                  <div className="row mb-4">
+                    <div className="col-md-3 mb-3">
+                      <label className="form-label">City <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="originCity" className="form-control" />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <label className="form-label">State / Province <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="originState" className="form-control" />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <label className="form-label">Postal / Zip Code <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="originPostalCode" className="form-control" />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <label className="form-label">Country</label>
+                      <select name="originCountry" className="form-select">
+                        <option>Australia</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Loading facilities available?</label>
+                    <div className="row">
+                      {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Other'].map(facility => (
+                        <div className="col-md-4 col-6" key={facility}>
+                          <div className="form-check">
+                            <input className="form-check-input" type="checkbox" name="loadingFacilities" value={facility} />
+                            <label className="form-check-label">{facility}</label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="text" name="loadingFacilitiesOther" className="form-control mt-2" placeholder="Please specify other loading facilities" />
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Loading support required?</label>
+                    <div className="row">
+                      {['Tailgate', 'Hand load', 'Dock load', 'Off dock'].map(support => (
+                        <div className="col-md-4 col-6" key={support}>
+                          <div className="form-check">
+                            <input className="form-check-input" type="checkbox" name="loadingSupport" value={support} />
+                            <label className="form-check-label">{support}</label>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="col-md-4 col-6">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" name="loadingSupport" value="Other" />
+                          <label className="form-check-label">Other</label>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="text" name="loadingSupportOther" className="form-control mt-2" placeholder="Please specify other loading support" />
+                  </div>
+
+                  <div className="mb-5">
+                    <label className="form-label">Special instruction for pick up</label>
+                    <textarea name="pickupInstructions" className="form-control" rows={3}></textarea>
+                  </div>
+
+                  <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '24px', color: '#495057', borderTop: '1px solid #dee2e6', paddingTop: '32px' }}>
+                    Destination Details
+                  </h5>
+
+                  <div className="row mb-4">
+                    <div className="col-md-3 mb-3">
+                      <label className="form-label">City <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="destinationCity" className="form-control" />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <label className="form-label">State / Province <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="destinationState" className="form-control" />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <label className="form-label">Postal / Zip Code <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="destinationPostalCode" className="form-control" />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <label className="form-label">Country</label>
+                      <select name="destinationCountry" className="form-select">
+                        <option>Australia</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Unloading facilities available?</label>
+                    <div className="row">
+                      {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Other'].map(facility => (
+                        <div className="col-md-4 col-6" key={facility}>
+                          <div className="form-check">
+                            <input className="form-check-input" type="checkbox" name="unloadingFacilities" value={facility} />
+                            <label className="form-check-label">{facility}</label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="text" name="unloadingFacilitiesOther" className="form-control mt-2" placeholder="Please specify other unloading facilities" />
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Unloading support required?</label>
+                    <div className="row">
+                      {['Tailgate', 'Hand load', 'Dock load', 'Off dock'].map(support => (
+                        <div className="col-md-4 col-6" key={support}>
+                          <div className="form-check">
+                            <input className="form-check-input" type="checkbox" name="unloadingSupport" value={support} />
+                            <label className="form-check-label">{support}</label>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="col-md-4 col-6">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" name="unloadingSupport" value="Other" />
+                          <label className="form-check-label">Other</label>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="text" name="unloadingSupportOther" className="form-control mt-2" placeholder="Please specify other unloading support" />
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Special instruction for delivery</label>
+                    <textarea name="deliveryInstructions" className="form-control" rows={3}></textarea>
+                  </div>
+                </div>
+
+                {/* Step 4: Customer Details */}
+                <div style={{ display: currentStep === 4 ? 'block' : 'none' }}>
+                  <h2 style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '32px', color: '#212529' }}>
+                    Customer Details
+                  </h2>
+
+                  <div className="row">
+                    <div className="col-md-6 mb-4">
+                      <label className="form-label">Company Name</label>
+                      <input type="text" name="companyName" className="form-control" />
+                    </div>
+                    <div className="col-md-6 mb-4">
+                      <label className="form-label">Your Name <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="text" name="yourName" className="form-control" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-6 mb-4">
+                      <label className="form-label">Phone <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="tel" name="phone" className="form-control" />
+                    </div>
+                    <div className="col-md-6 mb-4">
+                      <label className="form-label">Email <span style={{ color: '#dc3545' }}>*</span></label>
+                      <input type="email" name="email" className="form-control" />
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Preferred Contact</label>
+                    <div>
+                      <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="radio" name="preferredContact" value="Phone" defaultChecked />
+                        <label className="form-check-label">Phone</label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="radio" name="preferredContact" value="Email" />
+                        <label className="form-check-label">Email</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">Are you interested in any other services?</label>
+                    <div>
+                      <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="radio" name="otherServices" value="Yes" />
+                        <label className="form-check-label">Yes</label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="radio" name="otherServices" value="No" defaultChecked />
+                        <label className="form-check-label">No</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="form-label">How did you find us?</label>
+                    <div>
+                      {['Advertisement', 'Search Engine', 'Referral (word of mouth)', 'Industry Association', 'Other'].map(option => (
+                        <div className="form-check" key={option}>
+                          <input className="form-check-input" type="radio" name="findUs" value={option} />
+                          <label className="form-check-label">{option}</label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Navigation Buttons */}
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginTop: '48px',
+                  paddingTop: '32px',
+                  borderTop: '1px solid #dee2e6'
+                }}>
+                  {currentStep > 1 && (
+                    <button
+                      type="button"
+                      onClick={prevStep}
+                      className="btn btn-outline-secondary"
+                      style={{ padding: '12px 32px', fontWeight: '500' }}
+                    >
+                      Back
+                    </button>
+                  )}
+                  {currentStep < 4 ? (
+                    <button
+                      type="button"
+                      onClick={nextStep}
+                      className="btn"
+                      style={{
+                        backgroundColor: accentColor,
+                        color: '#ffffff',
+                        padding: '12px 32px',
+                        fontWeight: '500',
+                        marginLeft: 'auto',
+                        border: 'none'
+                      }}
+                    >
+                      Next
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn"
+                      style={{
+                        backgroundColor: accentColor,
+                        color: '#ffffff',
+                        padding: '12px 32px',
+                        fontWeight: '500',
+                        marginLeft: 'auto',
+                        border: 'none'
+                      }}
+                    >
+                      Submit
+                    </button>
+                  )}
+                </div>
+
+                <div style={{ textAlign: 'right', marginTop: '16px', color: '#9e9e9e', fontSize: '0.875rem' }}>
+                  Page {currentStep} of 4
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       <style>{`
         .form-label {
