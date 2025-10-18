@@ -10,7 +10,8 @@ import TeamPhoneCallSection from "./about-us-phone-call"
 import MissionVisionSection from './about-us-section3'
 import DirectorsSection, { DirectorCard } from "./about-us-section4"
 import ServicesFeaturesSection, { FeatureCard } from "./about-us-section5"
-import ArticleFeaturesSection, { FeatureHighlight, GalleryImage } from "./about-us-section6"
+import ArticleFeaturesSection from "./about-us-section6"
+import FeatureHighlights, { FeatureHighlight } from "./about-us-section7"
 import { FileResource, FileUploadBrick } from "./resources"
 import CareersApplication from "./careers"
 import { GeneralEnquiriesForm } from "./GeneralEnquiries"
@@ -39,8 +40,8 @@ const bricks: types.Brick[] = [
   ServicesFeaturesSection,
   FeatureCard,
   ArticleFeaturesSection,
-  GalleryImage,
-  FeatureHighlight,
+  FeatureHighlights,
+  FeatureHighlight, // Must be registered even though it's hidden from menu
   FileUploadBrick,
   FileResource,
   CareersApplication,

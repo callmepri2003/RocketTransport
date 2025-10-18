@@ -25,7 +25,15 @@ const TransportSection = ({ background }) => {
                 propName="title"
                 placeholder="Enter title..."
                 renderBlock={({ children }) => (
-                  <h2 className="fw-bold mb-3" style={{ lineHeight: '1.3', fontSize: '1.25rem', color: '#1e40af' }}>
+                  <h2
+                    className="fw-bold mb-4"
+                    style={{
+                      lineHeight: '1.3',
+                      fontSize: '2rem',
+                      color: '#1e40af',
+                      letterSpacing: '-0.02em'
+                    }}
+                  >
                     {children}
                   </h2>
                 )}
@@ -38,14 +46,99 @@ const TransportSection = ({ background }) => {
                   types.RichTextFeatures.Bold,
                   types.RichTextFeatures.Italic,
                   types.RichTextFeatures.Link,
+                  types.RichTextFeatures.Heading2,
+                  types.RichTextFeatures.Heading3,
+                  types.RichTextFeatures.UnorderedList,
                 ]}
                 renderBlock={({ children }) => (
-                  <p style={{ fontSize: '1rem', lineHeight: '1.6', color: '#212529', marginBottom: '1em' }}>
+                  <div className="content-wrapper">
                     {children}
-                  </p>
-
+                  </div>
+                )}
+                renderH2={({ children }) => (
+                  <h3
+                    style={{
+                      fontSize: '1.375rem',
+                      fontWeight: '700',
+                      color: '#212529',
+                      marginTop: '1.75rem',
+                      marginBottom: '1rem',
+                      lineHeight: '1.3'
+                    }}
+                  >
+                    {children}
+                  </h3>
+                )}
+                renderH3={({ children }) => (
+                  <h4
+                    style={{
+                      fontSize: '1.125rem',
+                      fontWeight: '600',
+                      color: '#212529',
+                      marginTop: '1.5rem',
+                      marginBottom: '0.875rem',
+                      lineHeight: '1.4'
+                    }}
+                  >
+                    {children}
+                  </h4>
+                )}
+                renderUL={({ children }) => (
+                  <ul
+                    style={{
+                      paddingLeft: '0',
+                      marginBottom: '1.5rem',
+                      listStyle: 'none'
+                    }}
+                  >
+                    {children}
+                  </ul>
+                )}
+                renderLI={({ children }) => (
+                  <li
+                    style={{
+                      position: 'relative',
+                      paddingLeft: '1.75rem',
+                      marginBottom: '1rem',
+                      fontSize: '1rem',
+                      lineHeight: '1.65',
+                      color: '#495057'
+                    }}
+                  >
+                    <span
+                      style={{
+                        position: 'absolute',
+                        left: '0',
+                        top: '0.35em',
+                        width: '6px',
+                        height: '6px',
+                        backgroundColor: '#1e40af',
+                        borderRadius: '50%',
+                        content: '""'
+                      }}
+                    >
+                      •
+                    </span>
+                    {children}
+                  </li>
                 )}
               />
+
+              <style jsx>{`
+                .content-wrapper p {
+                  font-size: 1.0625rem;
+                  line-height: 1.7;
+                  color: #212529;
+                  margin-bottom: 1.25rem;
+                }
+                .content-wrapper p:last-child {
+                  margin-bottom: 0;
+                }
+                .content-wrapper strong {
+                  font-weight: 600;
+                  color: #212529;
+                }
+              `}</style>
             </div>
           </div>
         </div>
@@ -60,8 +153,20 @@ TransportSection.schema = {
   category: 'content',
 
   getDefaultProps: () => ({
-    title: 'Comprehensive and tailored transport solutions.',
-    description: 'As an independent business, we have the flexibility to ensure that the nature of our services suits your specific needs (e.g. we can adopt any method of ordering and POD that you choose).\n\nOn top of that, our usual practice is to handle bookings with distribution centres ourselves, which can reduce administrative costs on your end.',
+    title: 'Metro Distribution',
+    description: `Our metro distribution network specialises in high-security freight handling for time-sensitive deliveries within the metropolitan area. We understand that urban logistics demands precision, speed, and discretion. Our experienced team manages your stock with the utmost care, ensuring secure and efficient transportation for your most valuable shipments.
+
+## Palletised Freight Transport
+
+We handle palletised freight with flexibility to suit your operation:
+
+• **Warehouse to Warehouse** – Direct transfers without booking time requirements, perfect for seamless supply chain operations
+
+• **Warehouse to Distribution Centre** – Scheduled deliveries with coordinated booking times to ensure smooth handover and inventory management
+
+## Taxi Trucks
+
+Need flexible, on-demand transport? Our taxi truck service provides quick access to dedicated vehicles for urgent or irregular freight movements, giving you the flexibility to respond to business demands as they arise.`,
     background: '#f8f9fa',
     image: {
       src: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800',

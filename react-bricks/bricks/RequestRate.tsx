@@ -14,8 +14,63 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
 
-  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
+  const validateStep = () => {
+    const form = document.querySelector('form');
+    if (!form) return false;
+
+    let isValid = true;
+    let fieldsToValidate: string[] = [];
+
+    // Define required fields per step
+    if (currentStep === 2) {
+      fieldsToValidate = ['goodsDescription', 'weight', 'dimensions'];
+
+      // Check if at least one nature of goods is checked
+      const natureCheckboxes = form.querySelectorAll('input[name="natureOfGoods"]:checked');
+      if (natureCheckboxes.length === 0) {
+        alert('Please select at least one option for "Nature of goods"');
+        return false;
+      }
+
+      // Check if goods type is selected
+      const goodsTypeRadio = form.querySelector('input[name="goodsType"]:checked');
+      if (!goodsTypeRadio) {
+        alert('Please select a "Type of goods"');
+        return false;
+      }
+    } else if (currentStep === 3) {
+      fieldsToValidate = ['originCity', 'originState', 'originPostalCode', 'destinationCity', 'destinationState', 'destinationPostalCode'];
+    } else if (currentStep === 4) {
+      fieldsToValidate = ['yourName', 'phone', 'email'];
+    }
+
+    // Validate text fields
+    for (const fieldName of fieldsToValidate) {
+      const field = form.querySelector(`[name="${fieldName}"]`) as HTMLInputElement | HTMLTextAreaElement;
+      if (field && !field.value.trim()) {
+        field.focus();
+        alert(`Please fill in the required field: ${field.previousElementSibling?.textContent?.replace(' *', '') || fieldName}`);
+        isValid = false;
+        break;
+      }
+    }
+
+    return isValid;
+  };
+
+  const nextStep = () => {
+    if (validateStep()) {
+      setCurrentStep(prev => Math.min(prev + 1, 4));
+    }
+  };
+
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    if (!validateStep()) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <section style={{ backgroundColor, padding: '80px 0', paddingTop: '0px' }}>
@@ -25,6 +80,8 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
             <form
               action={submitEndpoint}
               method="POST"
+              encType="multipart/form-data"
+              onSubmit={handleSubmit}
               style={{
                 backgroundColor: '#ffffff',
                 borderRadius: '8px',
@@ -166,13 +223,13 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
 
                 <div className="mb-4">
                   <label className="form-label">Brief description of the goods <span style={{ color: '#dc3545' }}>*</span></label>
-                  <textarea name="goodsDescription" className="form-control" rows={3} required></textarea>
+                  <textarea name="goodsDescription" className="form-control" rows={3}></textarea>
                 </div>
 
                 <div className="mb-4">
                   <label className="form-label">Nature of goods <span style={{ color: '#dc3545' }}>*</span></label>
                   <div>
-                    {['Dangerous Goods', 'Perishable / Food Grade', 'Fragile', 'Valuable'].map(nature => (
+                    {['Dangerous Goods', 'Perishable / Food Grade', 'Fragile', 'Valuable', 'None of the above'].map(nature => (
                       <div className="form-check" key={nature}>
                         <input className="form-check-input" type="checkbox" name="natureOfGoods" value={nature} />
                         <label className="form-check-label">{nature}</label>
@@ -182,14 +239,19 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                 </div>
 
                 <div className="mb-4">
-                  <label className="form-label">Type of goods</label>
+                  <label className="form-label">Type of goods <span style={{ color: '#dc3545' }}>*</span></label>
                   <div>
-                    {['Plain Pallet', 'Chep Pallet', 'Loscam Pallet', 'Skid', 'Crate', 'IBC', 'Other'].map(type => (
+                    {['Plain Pallet', 'Chep Pallet', 'Loscam Pallet', 'Skid', 'Crate', 'IBC'].map(type => (
                       <div className="form-check" key={type}>
                         <input className="form-check-input" type="radio" name="goodsType" value={type} />
                         <label className="form-check-label">{type}</label>
                       </div>
                     ))}
+                    <div className="form-check">
+                      <input className="form-check-input" type="radio" name="goodsType" value="Other" />
+                      <label className="form-check-label">Other</label>
+                    </div>
+                    <input type="text" name="goodsTypeOther" className="form-control mt-2" placeholder="Please specify other type" />
                   </div>
                 </div>
 
@@ -199,18 +261,18 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                 </div>
 
                 <div className="mb-4">
-                  <label className="form-label">Attach files link</label>
-                  <input type="url" name="filesLink" className="form-control" placeholder="https://drive.google.com/... or https://dropbox.com/..." />
-                  <div className="form-text">Share a link to files (Google Drive, Dropbox, etc.)</div>
+                  <label className="form-label">Attach files</label>
+                  <input type="file" name="files" className="form-control" multiple />
+                  <div className="form-text">You can select multiple files to upload</div>
                 </div>
 
                 <div className="row">
                   <div className="col-md-6 mb-4">
-                    <label className="form-label">Weight (kg)</label>
+                    <label className="form-label">Weight (kg) <span style={{ color: '#dc3545' }}>*</span></label>
                     <input type="text" name="weight" className="form-control" placeholder="Enter weight" />
                   </div>
                   <div className="col-md-6 mb-4">
-                    <label className="form-label">Dimensions (L x W x H)</label>
+                    <label className="form-label">Dimensions (L x W x H) <span style={{ color: '#dc3545' }}>*</span></label>
                     <input type="text" name="dimensions" className="form-control" placeholder="e.g., 1.2 x 1.2 x 2.4" />
                   </div>
                 </div>
@@ -228,15 +290,15 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
 
                 <div className="row mb-4">
                   <div className="col-md-3 mb-3">
-                    <label className="form-label">City</label>
+                    <label className="form-label">City <span style={{ color: '#dc3545' }}>*</span></label>
                     <input type="text" name="originCity" className="form-control" />
                   </div>
                   <div className="col-md-3 mb-3">
-                    <label className="form-label">State / Province</label>
+                    <label className="form-label">State / Province <span style={{ color: '#dc3545' }}>*</span></label>
                     <input type="text" name="originState" className="form-control" />
                   </div>
                   <div className="col-md-3 mb-3">
-                    <label className="form-label">Postal / Zip Code</label>
+                    <label className="form-label">Postal / Zip Code <span style={{ color: '#dc3545' }}>*</span></label>
                     <input type="text" name="originPostalCode" className="form-control" />
                   </div>
                   <div className="col-md-3 mb-3">
@@ -266,7 +328,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                 <div className="mb-4">
                   <label className="form-label">Loading support required?</label>
                   <div className="row">
-                    {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Off dock'].map(support => (
+                    {['Tailgate', 'Hand load', 'Dock load', 'Off dock'].map(support => (
                       <div className="col-md-4 col-6" key={support}>
                         <div className="form-check">
                           <input className="form-check-input" type="checkbox" name="loadingSupport" value={support} />
@@ -274,7 +336,14 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                         </div>
                       </div>
                     ))}
+                    <div className="col-md-4 col-6">
+                      <div className="form-check">
+                        <input className="form-check-input" type="checkbox" name="loadingSupport" value="Other" />
+                        <label className="form-check-label">Other</label>
+                      </div>
+                    </div>
                   </div>
+                  <input type="text" name="loadingSupportOther" className="form-control mt-2" placeholder="Please specify other loading support" />
                 </div>
 
                 <div className="mb-5">
@@ -288,15 +357,15 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
 
                 <div className="row mb-4">
                   <div className="col-md-3 mb-3">
-                    <label className="form-label">City</label>
+                    <label className="form-label">City <span style={{ color: '#dc3545' }}>*</span></label>
                     <input type="text" name="destinationCity" className="form-control" />
                   </div>
                   <div className="col-md-3 mb-3">
-                    <label className="form-label">State / Province</label>
+                    <label className="form-label">State / Province <span style={{ color: '#dc3545' }}>*</span></label>
                     <input type="text" name="destinationState" className="form-control" />
                   </div>
                   <div className="col-md-3 mb-3">
-                    <label className="form-label">Postal / Zip Code</label>
+                    <label className="form-label">Postal / Zip Code <span style={{ color: '#dc3545' }}>*</span></label>
                     <input type="text" name="destinationPostalCode" className="form-control" />
                   </div>
                   <div className="col-md-3 mb-3">
@@ -326,7 +395,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                 <div className="mb-4">
                   <label className="form-label">Unloading support required?</label>
                   <div className="row">
-                    {['Forklift', 'Tailgate', 'Crane', 'Hand load', 'Dock load', 'Off dock'].map(support => (
+                    {['Tailgate', 'Hand load', 'Dock load', 'Off dock'].map(support => (
                       <div className="col-md-4 col-6" key={support}>
                         <div className="form-check">
                           <input className="form-check-input" type="checkbox" name="unloadingSupport" value={support} />
@@ -334,7 +403,14 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                         </div>
                       </div>
                     ))}
+                    <div className="col-md-4 col-6">
+                      <div className="form-check">
+                        <input className="form-check-input" type="checkbox" name="unloadingSupport" value="Other" />
+                        <label className="form-check-label">Other</label>
+                      </div>
+                    </div>
                   </div>
+                  <input type="text" name="unloadingSupportOther" className="form-control mt-2" placeholder="Please specify other unloading support" />
                 </div>
 
                 <div className="mb-4">
@@ -351,23 +427,23 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
 
                 <div className="row">
                   <div className="col-md-6 mb-4">
-                    <label className="form-label">Company Name <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="companyName" className="form-control" required />
+                    <label className="form-label">Company Name</label>
+                    <input type="text" name="companyName" className="form-control" />
                   </div>
                   <div className="col-md-6 mb-4">
                     <label className="form-label">Your Name <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="text" name="yourName" className="form-control" required />
+                    <input type="text" name="yourName" className="form-control" />
                   </div>
                 </div>
 
                 <div className="row">
                   <div className="col-md-6 mb-4">
                     <label className="form-label">Phone <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="tel" name="phone" className="form-control" required />
+                    <input type="tel" name="phone" className="form-control" />
                   </div>
                   <div className="col-md-6 mb-4">
                     <label className="form-label">Email <span style={{ color: '#dc3545' }}>*</span></label>
-                    <input type="email" name="email" className="form-control" required />
+                    <input type="email" name="email" className="form-control" />
                   </div>
                 </div>
 
