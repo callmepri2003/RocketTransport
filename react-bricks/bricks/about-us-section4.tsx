@@ -141,6 +141,25 @@ const DirectorCard = () => {
               </div>
             )}
           />
+          <div className="mt-3 pt-3" style={{ borderTop: '1px solid #e2e8f0' }}>
+            <RichText
+              propName="email"
+              placeholder="email@company.com"
+              allowedFeatures={[
+                types.RichTextFeatures.Link,
+              ]}
+              renderBlock={({ children }) => (
+                <div
+                  style={{
+                    fontSize: '0.9rem',
+                    color: '#3b82f6'
+                  }}
+                >
+                  {children}
+                </div>
+              )}
+            />
+          </div>
         </div>
       </div>
     </div>
