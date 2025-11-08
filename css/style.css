@@ -31,6 +31,13 @@ body {
   color: var(--secondary-blue) !important;
 }
 
+@media (max-width: 768px) {
+  .navbar-brand img {
+    height: 70px;
+    /* Adjust this value to your preference */
+  }
+}
+
 .hero-section {
   background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
   color: white;
