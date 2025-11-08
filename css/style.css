@@ -33,7 +33,7 @@ body {
 
 @media (max-width: 768px) {
   .navbar-brand img {
-    height: 400px;
+    height: 100px;
     /* Adjust this value to your preference */
   }
 }
