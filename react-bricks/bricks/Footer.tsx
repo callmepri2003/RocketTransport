@@ -118,18 +118,23 @@ const Footer: types.Brick<FooterProps> = ({
                   </p>
                 )}
               />
-              <Text
-                propName="contactEmail"
-                placeholder="Email address..."
-                renderBlock={({ children }) => (
-                  <p className="mb-0">
-                    <strong>Email:</strong>{' '}
-                    <a href={`mailto:${children}`} className="text-blue-600 hover:underline">
-                      {children}
-                    </a>
-                  </p>
-                )}
-              />
+              <div className="mb-0">
+                <strong>Email:</strong>{' '}
+                {/* <Text
+                  propName="contactEmail"
+                  placeholder="Email address..."
+                  renderBlock={({ children }) => (
+                    <span className="text-blue-600">{children}</span>
+                  )}
+                /> */}
+                <a
+                  href={"https://mail.google.com/mail/?view=cm&fs=1&to=contact@rockettransport.au"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  contact@rockettransport.au
+                </a>
+              </div>
             </div>
           </div>
         </div>
