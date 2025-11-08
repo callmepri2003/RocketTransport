@@ -48,12 +48,12 @@ const TransportSection = ({ background }) => {
                   types.RichTextFeatures.Link,
                   types.RichTextFeatures.Heading2,
                   types.RichTextFeatures.Heading3,
-                  types.RichTextFeatures.UnorderedList,
+                  types.RichTextFeatures.UnorderedList
                 ]}
                 renderBlock={({ children }) => (
-                  <div className="content-wrapper">
+                  <p className="content-wrapper">
                     {children}
-                  </div>
+                  </p>
                 )}
                 renderH2={({ children }) => (
                   <h3

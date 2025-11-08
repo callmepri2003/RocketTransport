@@ -123,7 +123,10 @@ const Footer: types.Brick<FooterProps> = ({
                 placeholder="Email address..."
                 renderBlock={({ children }) => (
                   <p className="mb-0">
-                    <strong>Email:</strong> {children}
+                    <strong>Email:</strong>{' '}
+                    <a href={`mailto:${children}`} className="text-blue-600 hover:underline">
+                      {children}
+                    </a>
                   </p>
                 )}
               />
