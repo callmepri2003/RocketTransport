@@ -155,7 +155,7 @@ const DirectorCard = () => {
                     color: '#3b82f6'
                   }}
                 >
-                  {children}
+                   {children}
                 </div>
               )}
             />

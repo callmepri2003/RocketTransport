@@ -1,20 +1,22 @@
 import React from 'react';
 import { types, Text, RichText, Repeater } from 'react-bricks/frontend';
 
-interface FileData {
-  name: string;
-  size: number;
-  type: string;
-  url: string;
-  file: File;
-}
-
 interface FileResourceProps {
-  fileData?: FileData;
+  resourceName?: string;
+  description?: string;
+  driveLink?: string;
+  fileName?: string;
+  fileSize?: string;
 }
 
 // Nested brick for individual file resource
-const FileResource: types.Brick<FileResourceProps> = ({ fileData }) => {
+const FileResource: types.Brick<FileResourceProps> = ({
+  resourceName,
+  description,
+  driveLink,
+  fileName,
+  fileSize
+}) => {
   return (
     <div className="card mb-3 shadow-sm">
       <div className="card-body">
@@ -44,23 +46,28 @@ const FileResource: types.Brick<FileResourceProps> = ({ fileData }) => {
                 types.RichTextFeatures.Link,
               ]}
             />
-            {fileData && (
+            {(fileName || fileSize) && (
               <div className="mt-2">
-                <span className="badge bg-light text-dark border">
-                  <i className="bi bi-paperclip me-1"></i>
-                  {fileData.name}
-                </span>
-                <span className="badge bg-light text-dark border ms-1">
-                  {(fileData.size / 1024).toFixed(0)} KB
-                </span>
+                {fileName && (
+                  <span className="badge bg-light text-dark border">
+                    <i className="bi bi-paperclip me-1"></i>
+                    {fileName}
+                  </span>
+                )}
+                {fileSize && (
+                  <span className="badge bg-light text-dark border ms-1">
+                    {fileSize}
+                  </span>
+                )}
               </div>
             )}
           </div>
           <div className="col-auto">
-            {fileData && fileData.url ? (
+            {driveLink ? (
               <a
-                href={fileData.url}
-                download={fileData.name}
+                href={driveLink}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn btn-primary btn-lg"
                 style={{
                   backgroundColor: "#1e40af"
@@ -71,8 +78,8 @@ const FileResource: types.Brick<FileResourceProps> = ({ fileData }) => {
               </a>
             ) : (
               <button className="btn btn-outline-secondary btn-lg" disabled>
-                <i className="bi bi-upload me-2"></i>
-                No File
+                <i className="bi bi-link-45deg me-2"></i>
+                No Link
               </button>
             )}
           </div>
@@ -90,72 +97,36 @@ FileResource.schema = {
 
   sideEditProps: [
     {
-      name: 'fileData',
-      label: 'Upload File',
-      type: types.SideEditPropType.Custom,
-      component: ({ value, onChange }: { value: FileData, onChange: (file: FileData | null) => void }) => {
-        const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          if (!e.target.files || e.target.files.length === 0) return;
-
-          const file = e.target.files[0];
-          const fileData: FileData = {
-            name: file.name,
-            size: file.size,
-            type: file.type,
-            url: URL.createObjectURL(file),
-            file: file
-          };
-
-          onChange(fileData);
-        };
-
-        const handleRemove = () => {
-          if (value?.url) {
-            URL.revokeObjectURL(value.url);
-          }
-          onChange(null);
-        };
-
-        return (
-          <div className="p-3">
-            <div className="mb-3">
-              <input
-                type="file"
-                onChange={handleFileChange}
-                className="form-control form-control-sm"
-                accept="*/*"
-              />
-              <small className="form-text text-muted mt-1 d-block">
-                Upload a file for this resource
-              </small>
-            </div>
-
-            {value && (
-              <div className="alert alert-success p-2 d-flex justify-content-between align-items-center">
-                <div style={{ minWidth: 0 }}>
-                  <div className="fw-bold text-truncate small">{value.name}</div>
-                  <small className="text-muted">
-                    {(value.size / 1024).toFixed(2)} KB
-                  </small>
-                </div>
-                <button
-                  onClick={handleRemove}
-                  className="btn btn-sm btn-danger ms-2"
-                >
-                  Remove
-                </button>
-              </div>
-            )}
-          </div>
-        );
+      name: 'driveLink',
+      label: 'Google Drive Link',
+      type: types.SideEditPropType.Text,
+      validate: (value: string) => {
+        if (!value) return 'Google Drive link is required';
+        if (!value.includes('drive.google.com')) {
+          return 'Please enter a valid Google Drive link';
+        }
+        return true;
       }
+    },
+    {
+      name: 'fileName',
+      label: 'File Name (optional)',
+      type: types.SideEditPropType.Text,
+    },
+    {
+      name: 'fileSize',
+      label: 'File Size (optional)',
+      type: types.SideEditPropType.Text,
+      helperText: 'e.g., "2.5 MB" or "500 KB"'
     }
   ],
 
   getDefaultProps: () => ({
     resourceName: 'Untitled Resource',
     description: 'Click to add a description',
-    fileData: null
+    driveLink: '',
+    fileName: '',
+    fileSize: ''
   })
 };
 
@@ -167,7 +138,12 @@ interface FileUploadBrickProps {
 }
 
 // Main container brick
-const FileUploadBrick: types.Brick<FileUploadBrickProps> = ({ title, subtitle, emptyMessage, resources = [] }) => {
+const FileUploadBrick: types.Brick<FileUploadBrickProps> = ({
+  title,
+  subtitle,
+  emptyMessage,
+  resources = []
+}) => {
   const hasResources = resources && resources.length > 0;
 
   return (

@@ -57,6 +57,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
     for (const fieldName of fieldsToValidate) {
       const field = form.querySelector(`[name="${fieldName}"]`) as HTMLInputElement | HTMLTextAreaElement;
       if (field && !field.value.trim()) {
+        console.log(field.name);
         field.focus();
         // alert(`Please fill in the required field: ${field.previousElementSibling?.textContent?.replace(' *', '') || fieldName}`);
         isValid = false;
@@ -314,7 +315,7 @@ const TransportEnquiryForm: types.Brick<TransportEnquiryFormProps> = ({
                         <input className="form-check-input" type="radio" name="goodsType" value="Other" />
                         <label className="form-check-label">Other</label>
                       </div>
-                      <input required type="text" name="goodsTypeOther" className="form-control mt-2" placeholder="Please specify other type *" />
+                      <input type="text" name="goodsTypeOther" className="form-control mt-2" placeholder="Please specify other type *" />
                     </div>
                   </div>
 
